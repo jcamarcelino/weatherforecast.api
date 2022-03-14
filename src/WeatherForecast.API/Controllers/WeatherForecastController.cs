@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,7 +10,7 @@ using WeatherForecast.Domain.Interfaces;
 namespace WebApplication1.Controllers
 {
     [ApiController]
-    [Route("api/v{version:apiVersion}/weatherForecasts")]
+    [Route("api/v{version:apiVersion}/forecasts")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly ILogger<WeatherForecastController> _logger;
@@ -49,7 +50,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                _mediator.Send(command);
+                var result = _mediator.Send(command).Result;
 
                 return Ok();
             }
@@ -66,13 +67,15 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPatch("{id}")]
-        public IActionResult Patch(PatchWeatherForecastCommand command, [FromRoute] int id)
+        public IActionResult Patch(int id, JsonPatchDocument<WeatherForecast.Domain.Entities.WeatherForecast> patch)
         {
             try
             {
-                command.Id = id;
-
-                _mediator.Send(command);
+                var result = _mediator.Send(new PatchWeatherForecastCommand()
+                {
+                    Id = id,
+                    Patch = patch
+                }).Result;
 
                 return Ok();
             }
@@ -93,7 +96,7 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                _mediator.Send(new DeleteWeatherForecastCommand(id));
+                _ = _mediator.Send(new DeleteWeatherForecastCommand(id)).Result;
 
                 return Ok();
             }

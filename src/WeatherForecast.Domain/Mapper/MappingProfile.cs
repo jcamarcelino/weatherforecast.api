@@ -16,6 +16,10 @@ namespace WeatherForecast.Domain.Mapper
                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => DateTime.Now))
                .ForMember(dest => dest.TemperatureF, opt => opt.MapFrom(src => 32 + (int)(src.TemperatureC / 0.5556)))
                .ReverseMap();
+
+            CreateMap<PutWeatherForecastCommand, Entities.WeatherForecast>()
+               .ForMember(dest => dest.TemperatureF, opt => opt.MapFrom(src => 32 + (int)(src.TemperatureC / 0.5556)))
+               .ReverseMap();
         }
     }
 }

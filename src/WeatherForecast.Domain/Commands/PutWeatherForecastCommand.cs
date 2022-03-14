@@ -5,6 +5,8 @@ namespace WeatherForecast.Domain.Commands
 {
     public class PutWeatherForecastCommand : IRequest<bool>
     {
+        public int Id { get; set; }
+
         public DateTime Date { get; set; }
 
         public string Local { get; set; }

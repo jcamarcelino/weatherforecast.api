@@ -26,7 +26,7 @@ namespace WeatherForecast.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddVersioning();
 
@@ -43,7 +43,6 @@ namespace WeatherForecast.Api
 
             services.AddMediatR(typeof(AddWeatherForecastCommandHandler));
 
-            // Auto Mapper Configurations
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappingProfile());

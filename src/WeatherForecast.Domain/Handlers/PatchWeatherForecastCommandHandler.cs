@@ -23,9 +23,11 @@ namespace WeatherForecast.Domain.Handlers
         {
             var forecast = await _unitOfWork.WeatherForecast.Find(request.Id);
 
-            request.ApplyTo(forecast);
+            request.Patch.ApplyTo(forecast);
 
             bool success = await _unitOfWork.WeatherForecast.Update(forecast);
+
+            await _unitOfWork.CompleteAsync();
 
             return await Task.FromResult(success);
 

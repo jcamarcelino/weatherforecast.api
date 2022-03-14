@@ -25,6 +25,8 @@ namespace WeatherForecast.Domain.Handlers
 
             bool success = await _unitOfWork.WeatherForecast.Delete(forecast);
 
+            await _unitOfWork.CompleteAsync();
+
             return await Task.FromResult(success);
 
         }
